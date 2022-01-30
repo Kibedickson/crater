@@ -14,8 +14,6 @@ services:
     volumes:
       - ./:/var/www
       - ./docker-compose/php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini:rw,delegated
-    networks:
-      - crater
 
   db:
     image: mariadb
@@ -27,24 +25,18 @@ services:
       #- ./docker-compose/db/data:/var/lib/mysql:rw,delegated
     environment:
       MYSQL_USER: crater
-      MYSQL_PASSWORD: crater
+      MYSQL_PASSWORD: secret
       MYSQL_DATABASE: crater
-      MYSQL_ROOT_PASSWORD: crater
-    ports:
-      - '33006:3306'
-    networks:
-      - crater
+      MYSQL_ROOT_PASSWORD: secret
 
   nginx:
     image: nginx:1.17-alpine
     restart: unless-stopped
-    ports:
-      - 80:80
+    expose:
+      - 80
     volumes:
       - ./:/var/www
       - ./docker-compose/nginx:/etc/nginx/conf.d/
-    networks:
-      - crater
 
   cron:
     build:
@@ -52,12 +44,11 @@ services:
       dockerfile: ./docker-compose/cron.dockerfile
     volumes:
       - ./:/var/www
-    networks:
-      - crater
 
 volumes:
   db:
 
 networks:
-  crater:
-    driver: bridge
+  default:
+    external:
+      name: reverse-proxy

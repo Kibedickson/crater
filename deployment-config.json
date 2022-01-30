@@ -1,0 +1,10 @@
+[
+    {
+        "name": "Dickson Server",
+        "ip": "129.151.178.17",
+        "port": "22",
+        "beforeHooks": "",
+        "afterHooks": "chmod -R 777 $ACTIVE_RELEASE_PATH/storage",
+        "path": "/var/www/crater"
+    },
+]
