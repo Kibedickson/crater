@@ -29,7 +29,6 @@ jobs:
           host: ${{ secrets.AZURE_SERVER_IP }}
           username: ${{ secrets.AZURE_SERVER_USER }}
           key: ${{ secrets.AZURE_SERVER_KEY }}
-          port: ${{ secrets.AZURE_SERVER_PORT }}
           script: |
             cd ${{ secrets.AZURE_SERVER_APP_PATH }}
             chmod +x ./server_deploy.sh
