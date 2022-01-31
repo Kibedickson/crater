@@ -9,7 +9,7 @@ echo " Deploying Application... "
   git fetch origin deploy
   git reset --hard origin/deploy
 
-  docker-compose up -d --build
+  docker-compose -it up -d --build
 
   # Install dependencies based on composer.lock file
   docker-compose exec -it app composer install --no-interaction --prefer-dist --optimize-autoloader --ignore-platform-reqs
