@@ -7,7 +7,7 @@ git add .
 
 git commit -m "Build for Prod"
 
-(git push) || true
+git push
 
 git checkout production
 git merge master
