@@ -1,7 +1,7 @@
 name: Deploy Application
 
 on:
-  pull_request:
+  push:
     branches: [ production ]
 
 jobs:
@@ -13,14 +13,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
-      - name: Set up Node
-        uses: actions/setup-node@v1
-        with:
-          node-version: '16'
-          - run: yarn install
-
-          - run: yarn build
 
       - name: Commit built assets
         run: |

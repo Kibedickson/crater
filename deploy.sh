@@ -1,6 +1,12 @@
 #!/bin/sh
 set -e
 
+yarn build
+
+git add .
+
+git commit -m "Build for Prod"
+
 (git push) || true
 
 git checkout production
