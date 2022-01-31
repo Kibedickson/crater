@@ -8,8 +8,6 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-    outputs:
-      deployment-matrix: ${{ steps.export-deployment-matrix.outputs.deployment-matrix }}
 
     steps:
       - uses: actions/checkout@v2
@@ -21,31 +19,19 @@ jobs:
           git checkout -B deploy
           git push -f origin deploy
 
-      - name: Export deployment matrix
-        id: export-deployment-matrix
-        run: |
-          JSON="$(cat ./deployment-config.json)"
-          JSON="${JSON//'%'/'%25'}"
-          JSON="${JSON//$'\n'/'%0A'}"
-          JSON="${JSON//$'\r'/'%0D'}"
-          echo "::set-output name=deployment-matrix::$JSON"
-
   deploy-to-production:
-    name: "${{ matrix.server.name }}: Deploying..."
+    name: "Dickson Server: Deploying..."
     runs-on: ubuntu-latest
     needs: deploy
-    strategy:
-      matrix:
-        server: ${{ fromJson(needs.deploy.outputs.deployment-matrix) }}
     steps:
       - uses: appleboy/ssh-action@master
         with:
-          host: ${{ matrix.server.ip }}
-          username: ${{ matrix.server.username }}
-          key: ${{ secrets.KEY }}
-          port: ${{ matrix.server.port }}
+          host: ${{ secrets.AZURE_SERVER_IP }}
+          username: ${{ secrets.AZURE_SERVER_USER }}
+          key: ${{ secrets.AZURE_SERVER_KEY }}
+          port: ${{ secrets.AZURE_SERVER_PORT }}
           script: |
-            cd ${{ matrix.server.path }}
+            cd ${{ secrets.AZURE_SERVER_APP_PATH }}
             chmod +x ./server_deploy.sh
             ./server_deploy.sh
 
